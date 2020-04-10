@@ -3,24 +3,33 @@
 from datetime import datetime as dt
 import sys
 import socket
-lower_port = 1
+# checks the correct amount of arguments were supplied
+if len(sys.argv) == 2:
+	target = socket.gethostbyname(sys.argv[1]) # same as $1 in bash, translate hostname to ipv4
+else:
+	print("invalid amount of arguments")
+	print(" syntax: ./portscanner.py (hostname)")
+	sys.exit()	#exits the program
+
+lower_port = 1 # set arbitary values for the port range
 higher_port = 2
 
-
+# function to allow the user to set the higher limit of the port scan
 def higher():
 	global higher_port
+	global lower_port
 	higher_port = input("please set the highest port you want to scan: ") #set the highest port to scan
-	if higher_port.isdigit():
-		if int(higher_port) > 65535:
+	if higher_port.isdigit(): #checks if the user input is a interger
+		if int(higher_port) > 65535: #if the input is higher than the highest port it asks them to choose a value in range
 			print(higher_port + " is higher than 65535, please choose a port betwwen 1-65535")
 			higher()
-		elif int(higher_port) <1:
-			print(higher_port + " is less than 1, please choose a port between 1 and 65535")
+		elif int(higher_port) < int(lower_port):# checks the value is higher than the lower port set
+			print(higher_port + " is less than your lower limit, please choose a port between " + str(lower_port) + " and 65535")
 			higher()
 	else:
 		print("\nsorry, we only accept intergers, please try again!\n")
 		higher()
-def lower():
+def lower(): # defines lower limit
 	global lower_port
 	lower_port = input("please set the lowest port you want to scan: ") #sets the bottom port to scan
 	if lower_port.isdigit():
@@ -34,13 +43,6 @@ def lower():
 		print("\nunfortunately, we only accept intergers, please try again!\n")
 		lower()
 
-
-#define our target
-if len(sys.argv) == 2:
-	target = socket.gethostbyname(sys.argv[1]) # same as $1 in bash, translate hostname to ipv4
-else:
-	print("invalid amount of arguments")
-	print(" syntax: ./portscanner.py (hostname)")	
 
 #add a pretty banner
 print("-"*50)
