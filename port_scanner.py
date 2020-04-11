@@ -3,18 +3,7 @@
 from datetime import datetime as dt
 import sys
 import socket
-# checks the correct amount of arguments were supplied
-if len(sys.argv) == 2:
-	target = socket.gethostbyname(sys.argv[1]) # same as $1 in bash, translate hostname to ipv4
-else:
-	print("invalid amount of arguments")
-	print(" syntax: ./portscanner.py (hostname)")
-	sys.exit()	#exits the program
 
-lower_port = 1 # set arbitary values for the port range
-higher_port = 2
-
-# function to allow the user to set the higher limit of the port scan
 def higher():
 	global higher_port
 	global lower_port
@@ -29,6 +18,7 @@ def higher():
 	else:
 		print("\nsorry, we only accept intergers, please try again!\n")
 		higher()
+
 def lower(): # defines lower limit
 	global lower_port
 	lower_port = input("please set the lowest port you want to scan: ") #sets the bottom port to scan
@@ -37,26 +27,41 @@ def lower(): # defines lower limit
 			print(lower_port + " is less than 1, please choose a port between 1 and 65535")
 			lower()
 		elif int(lower_port) > 65535:
-			print(lower_port + " is higher than 65535, please choose a port betwwen 1-65535")
+			print(lower_port + " is higher than 65535, please choose a port betwwen1-65535")
 			lower()
 	else:
 		print("\nunfortunately, we only accept intergers, please try again!\n")
 		lower()
 
 
+def main():
+	global lower_port
+	global higher_port
+# checks the correct amount of arguments were supplied
+	if len(sys.argv) == 2:
+		target = socket.gethostbyname(sys.argv[1]) # same as $1 in bash, translate hostname to ipv4
+	else:
+		print("invalid amount of arguments")
+		print(" syntax: ./portscanner.py (hostname)")
+		sys.exit()	#exits the program
+
+	lower_port = 1 # set arbitary values for the port range
+	higher_port = 2
+
+# function to allow the user to set the higher limit of the port scan
+
 #add a pretty banner
-print("-"*50)
-print("scanning target: " + target)
-print("-"*50)
-lower()
-higher()
-start_time = dt.now()
-print("-"*50)
-print("\n")
-print("Time Started: " + str(start_time))
-print("\n")
-print("-"*50)
-try:
+	print("-"*50)
+	print("scanning target: " + target)
+	print("-"*50)
+	lower()
+	higher()
+	start_time = dt.now()
+	print("-"*50)
+	print("\n")
+	print("Time Started: " + str(start_time))
+	print("\n")
+	print("-"*50)
 	print(lower_port)
 	print(higher_port)
 	for port in range (int(lower_port),int(higher_port)):
@@ -71,13 +76,15 @@ try:
 	total_time = end_time - start_time
 	print("the scan took: " + str(total_time.total_seconds()) + "seconds to complete")
 			
-
-except KeyboardInterrupt:
-	print("\nexiting program")
-	sys.exit()
-except socket.gaierror:
-	print("\ncouldnt resolve host name")
-	sys.exit()
-except socket.error:
-	print ("\n Couldn't connect to server")
-	sys.exit()
+if __name__ == "__main__":
+	try:
+		main()
+	except KeyboardInterrupt:
+		print("\nexiting program")
+		sys.exit()
+	except socket.gaierror:
+		print("\ncouldnt resolve host name")
+		sys.exit()
+	except socket.error:
+		print ("\n Couldn't connect to server")
+		sys.exit()
