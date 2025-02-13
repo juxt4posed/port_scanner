@@ -1,10 +1,10 @@
 ✅(implemented) ❌ (currently working on)
 
-1. Implement UDP Scanning ❌ \n
-Modify scan_port() to support UDP. ✅ \n
-Send a UDP packet to the target port. ✅ \n
-Detect responses (ICMP unreachable = closed, no response = open/filtered).❌ \n
-Allow user selection of TCP/UDP or both.✅ \n
+1. Implement UDP Scanning ❌ <br>
+Modify scan_port() to support UDP. ✅ <br>
+Send a UDP packet to the target port. ✅ <br>
+Detect responses (ICMP unreachable = closed, no response = open/filtered).❌ <br>
+Allow user selection of TCP/UDP or both.✅ <br>
 
 
 2. Add Banner Grabbing 
